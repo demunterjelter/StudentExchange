@@ -59,9 +59,10 @@ nav .sidenav-trigger{
 }
 
 /* form-styles */
-.add-btn{
+.add-btn, .head-form{
   background: var(--title) !important;
 }
+
 input{
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
