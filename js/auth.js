@@ -1,3 +1,24 @@
+//get data
+db.collection('products').get().then(snapshot => {
+    console.log(snapshot.docs);
+});
+
+//listen for auth status changes
+auth.onAuthStateChanged(user => {
+    if(user) {
+        console.log('user logged in', user);
+    } else {
+        console.log('user logged out');
+    }
+});
+
+//let user see
+/*const accountForm = document.querySelector('#modal-account');
+signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    console.log('je hebt op account geklikt');
+});*/
+
 //sign up
 const signupForm = document.querySelector('#signup-form');
 signupForm.addEventListener('submit', (e) => {
@@ -21,7 +42,7 @@ const logout = document.querySelector('#logout');
 logout.addEventListener('click', (e) => {
     e.preventDefault();
     auth.signOut().then(() => {
-        console.log('user is uitgelogged');
+        
     });
 });
 
@@ -35,7 +56,6 @@ loginForm.addEventListener('submit', (e) => {
     const password = loginForm['login-password'].value;
 
     auth.signInWithEmailAndPassword(email, password).then(cred => {
-        console.log(cred.user);
         //close the login modal and reset
         const modal = document.querySelector('#modal-login');
         M.Modal.getInstance(modal).close();
