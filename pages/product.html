@@ -19,6 +19,24 @@
       <span class="right grey-text text-darken-1">
         <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
       </span>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li class="logged-in">
+          <a href="#" class="grey-text modal-trigger"  id="account" data-target="modal-account">Account</a>
+        </li>
+        <li class="logged-in">
+          <a href="#" class="grey-text" id="logout">Logout</a>
+        </li>
+        <li class="logged-in">
+          <a href="#" class="grey-text modal-trigger" data-target="modal-create">Create product</a>
+        </li>
+        <li class="logged-out">
+          <a href="#" class="grey-text modal-trigger" data-target="modal-login">Login</a>
+        </li>
+        <li class="logged-out">
+          <a href="#" class="grey-text modal-trigger" data-target="modal-signup">Sign up</a>
+        </li>
+      </span>
+    </ul>
     </div>
   </nav>
 
@@ -34,6 +52,68 @@
       </li>
       
     </ul>
+
+<!-- SIGN UP MODAL -->
+<div id="modal-signup" class="modal">
+  <div class="modal-content">
+    <h4>Sign up</h4><br />
+    <form id="signup-form">
+      <div class="input-field">
+        <input type="email" id="signup-email" required />
+        <label for="signup-email">Email address</label>
+      </div>
+      <div class="input-field">
+        <input type="password" id="signup-password" required />
+        <label for="signup-password">Choose password</label>
+      </div>
+      <button class="btn yellow darken-2 z-depth-0">Sign up</button>
+    </form>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="modal-login" class="modal">
+  <div class="modal-content">
+    <h4>Login</h4><br />
+    <form id="login-form">
+      <div class="input-field">
+        <input type="email" id="login-email" required />
+        <label for="login-email">Email address</label>
+      </div>
+      <div class="input-field">
+        <input type="password" id="login-password" required />
+        <label for="login-password">Your password</label>
+      </div>
+      <button class="btn yellow darken-2 z-depth-0">Login</button>
+    </form>
+  </div>
+</div>
+<!-- ACCOUNT MODAL -->
+<div id="modal-account" class="modal">
+  <div class="modal-content center-align">
+    <h4 id="AccountDetails">Account details</h4><br />
+    <div class="account-details"></div>
+  </div>
+</div>
+
+<!-- CREATE product MODAL -->
+<div id="modal-create" class="modal">
+  <div class="modal-content">
+    <h4>Create Product</h4><br />
+    <form id="create-form">
+      <div class="input-field">
+        <input type="text" id="title" required>
+        <label for="title">Product Title</label>
+      </div>
+      <div class="input-field">
+        <textarea id="content" class="materialize-textarea" required></textarea>
+        <label for="content">Product Content</label>
+      </div>
+      <button class="btn yellow darken-2 z-depth-0">Create</button>
+    </form>
+  </div>
+</div>
+
 
   <!-- products -->
   <div class="recipes container grey-text text-darken-1">
@@ -77,6 +157,14 @@
         <i class="material-icons">delete_outline</i>
       </div>
     </div>
+
+    <div class="container" style="margin-top:40px;">
+      <ul class="collapsible z-depth-0 guides" style="border: none;">
+
+      </ul>
+    </div>
+
+
   </div>
 
   <div class="center">
@@ -91,8 +179,8 @@
       <h6 >New Product</h6>
       <div class="divider"></div>
       <div class="input-field">
-        <input placeholder="e.g. windows server" id="title" type="text" class="validate">
-        <label for="title">Product Title</label>
+        <input placeholder="e.g. windows server" id="productTitle" type="text" class="validate">
+        <label for="prductTitle">Product Title</label>
       </div>
       <div class="input-field">
         <input placeholder="e.g. Jordan Krause, Louis Davidson, Stacia Varga" id="author" type="text" class="validate">
@@ -104,6 +192,49 @@
     </form>
   </div>
 
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<!--<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js"></script>-->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDNW7OpBLDYVwmsgSv26ChkdQorex5-_SY",
+    authDomain: "studentexchange-42a0c.firebaseapp.com",
+    databaseURL: "https://studentexchange-42a0c.firebaseio.com",
+    projectId: "studentexchange-42a0c",
+    storageBucket: "studentexchange-42a0c.appspot.com",
+    messagingSenderId: "874611219077",
+    appId: "1:874611219077:web:b1183f6a12983ca44ae7ec",
+    measurementId: "G-FFWKVCZXTS"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  //firebase.analytics();
+
+// make auth and firestore references
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+
+</script>
+
+
   <script src="/js/ui.js"></script>
+  <script src="/js/home.js"></script>
+  <script src="/js/product.js"></script>
+  <script src="/js/auth.js"></script>
+  <!--<script src="/__/firebase/6.4.0/firebase-app.js"></script>
+  <script src="/__/firebase/6.4.0/firebase-auth.js"></script>
+  <script src="/__/firebase/6.4.0/firebase-storage.js"></script>
+  <script src="/__/firebase/6.4.0/firebase-messaging.js"></script>
+  <script src="/__/firebase/6.4.0/firebase-firestore.js"></script>
+  <script src="/__/firebase/6.4.0/firebase-performance.js"></script>
+  <script src="/__/firebase/init.js"></script>-->
 </body>
 </html>

@@ -1,23 +1,21 @@
-//get data
-db.collection('products').get().then(snapshot => {
-    console.log(snapshot.docs);
-});
+
 
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
     if(user) {
         console.log('user logged in', user);
+        var curEmail = firebase.auth().currentUser.email;
+    document.getElementById('account').innerHTML = curEmail;
     } else {
         console.log('user logged out');
+        var curEmail = firebase.auth().currentUser.email;
+
+        document.getElementById('account').innerHTML = 'Account';
+        location.reload(true);
     }
 });
 
-//let user see
-/*const accountForm = document.querySelector('#modal-account');
-signupForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    console.log('je hebt op account geklikt');
-});*/
+
 
 //sign up
 const signupForm = document.querySelector('#signup-form');
@@ -62,3 +60,4 @@ loginForm.addEventListener('submit', (e) => {
         loginForm.reset();
     });
 });
+
