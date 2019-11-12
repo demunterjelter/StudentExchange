@@ -1,30 +1,30 @@
 //get data
 db.collection('products').get().then(snapshot => {
-    setupGuides(snapshot.docs);
+    setupProducts(snapshot.docs);
 });
 
-const guideList = document.querySelector('.guides');
+const productList = document.querySelector('.productBook');
+const productForm = document.querySelector('#create-form');
 
-//setup guides
-const setupGuides = (data) => {
+//setup products
+const setupProducts = (data) => {
     let html = '';
     data.forEach(doc => {
-        const guide = doc.data();
-        console.log(guide);
+        const product = doc.data();
+        //console.log(product);
         var image = new Image();
-        image.src = "data:image/jpg;base64," + guide.img;
+        image.src = "data:image/jpg;base64," + product.img;
         var afbeelding = image.src;
+        var docId = doc.id;
 
         const li = `
-            <div class="card-panel recipe white row">
+            <div class="card-panel recipe white row " data-id="${docId}">
             <img alt="recipe thumb" src="${afbeelding}">
                 <div class="recipe-details">
-                  <div class="recipe-title">${guide.title}</div>
-                  <div class="recipe-product">${guide.author}</div>
+                  <div class="recipe-title">${product.title}</div>
+                  <div class="recipe-product">${product.author}</div>
                 </div>
-                <div class="recipe-delete">
-                  <i class="material-icons">delete_outline</i>
-                </div>
+                <div class="deleteItem">x</div>   
             </div>
             
         `;
@@ -32,12 +32,33 @@ const setupGuides = (data) => {
         html += li
     });
 
-    guideList.innerHTML = html;
-
+    productList.innerHTML = html;
+    //deleting data
+    document.querySelectorAll('.deleteItem').forEach(function(item){
+        item.addEventListener('click', (e) => {
+            //e.stopPropagation();
+            console.log("je hebt op delete gedrukt");
+            let id = e.target.parentElement.getAttribute('data-id');
+            db.collection('products').doc(id).delete();
+            console.log(id);
+            e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+        });
+    })
+    
 }
 
-/*<li>
-                <div class="collapsible-header grey lighten-4">${guide.title}</div>
-                <div class="collapsible-body white">${guide.author}</div>
-            </li>
-            */
+//saving data
+productForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    db.collection('products').add({
+       
+        title: productForm.title.value,
+        author: productForm.author.value
+    });
+    const modal = document.querySelector('#modal-create');
+    M.Modal.getInstance(modal).close();
+    productForm.reset();
+});
+
+
+
