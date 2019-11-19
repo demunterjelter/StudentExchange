@@ -6,6 +6,7 @@ db.collection('products').get().then(snapshot => {
 const productList = document.querySelector('.productBook');
 const productForm = document.querySelector('#create-form');
 
+
 //setup products
 const setupProducts = (data) => {
     let html = '';
@@ -47,11 +48,51 @@ const setupProducts = (data) => {
     
 }
 
+
+
+
+//filereader probeersel
+
+var resultReader = '';
+
+function previewFile() {
+    var preview = document.querySelector('img');
+    var file    = document.querySelector('input[type=file]').files[0];
+    var reader  = new FileReader();
+
+   
+    reader.addEventListener("load", function () {
+      preview.src = reader.result;
+    }, false);
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+
+ //probeer naar base 64 te overzetten
+    
+ var reader = new FileReader();
+ reader.readAsDataURL(file);
+ reader.onload = function () {
+   console.log(reader.result.split(',')[1]);
+   resultReader = reader.result.split(',')[1];
+ };
+ reader.onerror = function (error) {
+   console.log('Error: ', error);
+ };
+
+
+//-----------------------------------------------
+
+  }
+
 //saving data
 productForm.addEventListener('submit', (e) => {
     e.preventDefault();
+   
+  
     db.collection('products').add({
-       
+        img: resultReader,
         title: productForm.title.value,
         author: productForm.author.value
     });
