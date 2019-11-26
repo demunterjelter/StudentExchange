@@ -25,6 +25,7 @@ const setupProducts = (data) => {
                   <div class="recipe-title">${product.title}</div>
                   <div class="recipe-product">${product.author}</div>
                 </div>
+                <div data-target="modal-edit" class="editItem">edit</div> <br/>
                 <div class="deleteItem">x</div>   
             </div>
             
@@ -37,21 +38,50 @@ const setupProducts = (data) => {
     //deleting data
     document.querySelectorAll('.deleteItem').forEach(function(item){
         item.addEventListener('click', (e) => {
-            //e.stopPropagation();
+            
             console.log("je hebt op delete gedrukt");
             let id = e.target.parentElement.getAttribute('data-id');
             db.collection('products').doc(id).delete();
             console.log(id);
             e.target.parentElement.parentElement.removeChild(e.target.parentElement);
         });
-    })
+    });
+
+
+   
+
+
+     //editing data
+     document.querySelectorAll('.editItem').forEach(function(item){
+        item.addEventListener('click', (e) => {
+            
+            console.log("je hebt op edit gedrukt");
+
+            const editForm = document.querySelector('#edit-form');
+            signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+        
+            //get user info
+            const titleEdit = editForm['titleEdit'].value;
+            const authorEdit = editForm['authorEdit'].value;
+
+           
+        
+        });
+        let id = e.target.parentElement.getAttribute('data-id');
+        db.collection('products').doc(id).update({author: 'authorEdit' , title: 'titleEdit' });
+            
+        });
+
+        
+    });
     
 }
 
 
 
 
-//filereader probeersel
+//preview creeren van gekozen img
 
 var resultReader = '';
 
@@ -69,22 +99,20 @@ function previewFile() {
       reader.readAsDataURL(file);
     }
 
- //probeer naar base 64 te overzetten
+    //naar base 64 overzetten
     
- var reader = new FileReader();
- reader.readAsDataURL(file);
- reader.onload = function () {
-   console.log(reader.result.split(',')[1]);
-   resultReader = reader.result.split(',')[1];
- };
- reader.onerror = function (error) {
-   console.log('Error: ', error);
- };
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        console.log(reader.result.split(',')[1]);
+        resultReader = reader.result.split(',')[1];
+    };
 
-
-//-----------------------------------------------
-
-  }
+    reader.onerror = function (error) {
+        console.log('Error: ', error);
+    };
+//-----------------------------
+ }
 
 //saving data
 productForm.addEventListener('submit', (e) => {
