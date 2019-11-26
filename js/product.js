@@ -25,7 +25,7 @@ const setupProducts = (data) => {
                   <div class="recipe-title">${product.title}</div>
                   <div class="recipe-product">${product.author}</div>
                 </div>
-                <div data-target="modal-edit" class="editItem">edit</div> <br/>
+                <a href="#" data-target="modal-edit" class="grey-text modal-trigger editItem">edit</a> <br/>
                 <div class="deleteItem">x</div>   
             </div>
             
@@ -50,27 +50,40 @@ const setupProducts = (data) => {
 
    
 
-
+    
      //editing data
      document.querySelectorAll('.editItem').forEach(function(item){
         item.addEventListener('click', (e) => {
-            
+            e.preventDefault();
             console.log("je hebt op edit gedrukt");
 
             const editForm = document.querySelector('#edit-form');
-            signupForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-        
-            //get user info
-            const titleEdit = editForm['titleEdit'].value;
-            const authorEdit = editForm['authorEdit'].value;
+            let titleEdit = '';
+            let authorEdit='';
 
-           
+
+            editForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log('verwerken form');
+                //get user info
+                 titleEdit = editForm.titleEdit.value;
+                 authorEdit = editForm.authorEdit.value;
+                 
+                 
+
+                console.log(titleEdit);
+                console.log(authorEdit);                
         
-        });
-        let id = e.target.parentElement.getAttribute('data-id');
-        db.collection('products').doc(id).update({author: 'authorEdit' , title: 'titleEdit' });
+                
+                db.collection('products').doc(id).update({author: authorEdit , title: titleEdit });
+                M.Modal.getInstance(modal).close();
+            });
             
+            let id = e.target.parentElement.getAttribute('data-id');
+            const modal = document.querySelector('#modal-edit');
+            
+            editForm.reset();
+        
         });
 
         
@@ -127,6 +140,7 @@ productForm.addEventListener('submit', (e) => {
     const modal = document.querySelector('#modal-create');
     M.Modal.getInstance(modal).close();
     productForm.reset();
+
 });
 
 
